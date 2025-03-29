@@ -1,7 +1,11 @@
 import { useState, useRef } from "react"
 import api from '../../services/api.js'
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function Auth() {
+  //Card de notificações dinâmicas
+  const notify = (msg, type) => toast[type](msg, { position: 'bottom-left', autoClose: 1500, theme: 'light' })
+
   //Estado que controla a transição dos form
   const [isActive, setIsActive] = useState(false)
 
@@ -17,6 +21,10 @@ export default function Auth() {
   const handleLogin = async (e) => {
     e.preventDefault()
 
+    if (!emailLog.current.value || !passwordLog.current.value) {
+      return notify('Por favor, preencha todos os campos.', 'error')
+    }
+
     try {
       const { data: token } = await api.post('/auth/login', {
         email: emailLog.current.value,
@@ -26,12 +34,20 @@ export default function Auth() {
       localStorage.setItem('token', token)
 
     } catch (error) {
-      return alert('Erro')
+      return notify('Houve um erro ao tentar acessar sua conta. Verifique seus dados e tente novamente.', 'error')
     }
   }
 
   const handleRegister = async (e) => {
     e.preventDefault()
+
+    if (!nameReg.current.value || !emailReg.current.value || !passwordReg.current.value) {
+      return notify('Por favor, preencha todos os campos.', 'error')
+    }
+
+    if (passwordReg.current.value.length < 8) {
+      return notify('Por favor, insira uma senha com no mínimo 8 caracteres.', 'error')
+    }
 
     try {
       await api.post('/auth/register', {
@@ -39,8 +55,11 @@ export default function Auth() {
         email: emailReg.current.value,
         password: passwordReg.current.value
       })
+
+      notify('Cadastro realizado com sucesso!', 'success')
+      setIsActive(false) //Volta para o login
     } catch (error) {
-      return alert('Erro')
+      return notify('Não foi possível realizar o cadastro. Verifique os dados e tente novamente.', 'error')
     }
   }
 
@@ -88,6 +107,7 @@ export default function Auth() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   )
 }
