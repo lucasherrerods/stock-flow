@@ -1,10 +1,10 @@
-import Login from "./pages/Login"
+import Auth from "./pages/Auth"
 
 function App() {
 
   return (
     <>
-      <Login />
+      <Auth />
     </>
   )
 }
