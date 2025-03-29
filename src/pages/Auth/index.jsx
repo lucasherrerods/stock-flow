@@ -1,8 +1,48 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
+import api from '../../services/api.js'
 
 export default function Auth() {
   //Estado que controla a transição dos form
   const [isActive, setIsActive] = useState(false)
+
+  //Referências de cadastro
+  const nameReg = useRef()
+  const emailReg = useRef()
+  const passwordReg = useRef()
+
+  //Referências de login
+  const emailLog = useRef()
+  const passwordLog = useRef()
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    try {
+      const { data: token } = await api.post('/auth/login', {
+        email: emailLog.current.value,
+        password: passwordLog.current.value
+      })
+
+      localStorage.setItem('token', token)
+
+    } catch (error) {
+      return alert('Erro')
+    }
+  }
+
+  const handleRegister = async (e) => {
+    e.preventDefault()
+
+    try {
+      await api.post('/auth/register', {
+        name: nameReg.current.value,
+        email: emailReg.current.value,
+        password: passwordReg.current.value
+      })
+    } catch (error) {
+      return alert('Erro')
+    }
+  }
 
   return (
     <div className="flex items-center justify-center flex-col h-screen">
@@ -10,10 +50,10 @@ export default function Auth() {
         <div className={`absolute top-0 h-full transition-all duration-500 ease-in-out left-0 w-1/2 opacity-0 z-10 ${isActive ? 'translate-x-full opacity-100 z-50' : ''}`}>
           <form className="bg-white flex items-center justify-center flex-col px-10 h-full gap-3">
             <h1 className="text-2xl font-bold mb-4">Crie sua conta</h1>
-            <input className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="text" placeholder="Nome" />
-            <input className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="email" placeholder="E-mail" />
-            <input className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="password" placeholder="Senha" />
-            <button className="bg-orange-500 text-white text-sm py-2.5 px-11 border border-transparent rounded-lg font-semibold tracking-wider uppercase mt-2.5 cursor-pointer hover:bg-orange-400 transition">
+            <input ref={nameReg} className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="text" placeholder="Nome" />
+            <input ref={emailReg} className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="email" placeholder="E-mail" />
+            <input ref={passwordReg} className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="password" placeholder="Senha" />
+            <button onClick={handleRegister} className="bg-orange-500 text-white text-sm py-2.5 px-11 border border-transparent rounded-lg font-semibold tracking-wider uppercase mt-2.5 cursor-pointer hover:bg-orange-400 transition">
               Cadastrar
             </button>
           </form>
@@ -21,10 +61,10 @@ export default function Auth() {
         <div className={`absolute top-0 h-full transition-all duration-500 ease-in-out left-0 w-1/2 z-20 ${isActive ? 'translate-x-full' : ''}`}>
           <form className="bg-white flex items-center justify-center flex-col px-10 h-full gap-3">
             <h1 className="text-2xl font-bold mb-4">Faça login</h1>
-            <input className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="email" placeholder="E-mail" />
-            <input className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="password" placeholder="Senha" />
+            <input ref={emailLog} className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="email" placeholder="E-mail" />
+            <input ref={passwordLog} className="bg-gray-200 border-0 my-2 py-2.5 px-4 text-sm rounded-lg w-full outline-none" type="password" placeholder="Senha" />
             <a className="text-gray-600 text-xs no-underline my-3 hover:underline" href="#">Esqueceu sua senha?</a>
-            <button className="bg-orange-500 text-white text-sm py-2.5 px-11 border border-transparent rounded-lg font-semibold tracking-wider uppercase mt-2.5 cursor-pointer hover:bg-orange-400 transition">
+            <button onClick={handleLogin} className="bg-orange-500 text-white text-sm py-2.5 px-11 border border-transparent rounded-lg font-semibold tracking-wider uppercase mt-2.5 cursor-pointer hover:bg-orange-400 transition">
               Entrar
             </button>
           </form>
