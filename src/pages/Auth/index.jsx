@@ -53,6 +53,7 @@ export default function Auth() {
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    localStorage.removeItem('token')//Limpa o token anterior
 
     if (!validateLogin()) {
       return
@@ -66,6 +67,7 @@ export default function Auth() {
 
       localStorage.setItem('token', data.token)
     } catch (error) {
+      localStorage.removeItem('token')//Limpa o token inválido
       notify('Houve um erro ao tentar acessar sua conta. Verifique seus dados e tente novamente.', 'error')
     }
   }
