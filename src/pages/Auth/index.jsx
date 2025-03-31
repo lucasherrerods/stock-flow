@@ -59,12 +59,12 @@ export default function Auth() {
     }
 
     try {
-      const { data: token } = await api.post('/auth/login', {
+      const { data } = await api.post('/auth/login', {
         email: formLogin.email,
         password: formLogin.password
       })
 
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', data.token)
     } catch (error) {
       notify('Houve um erro ao tentar acessar sua conta. Verifique seus dados e tente novamente.', 'error')
     }
