@@ -1,10 +1,13 @@
 import Sidebar from "../../components/Sidebar"
+import Main from "../../components/Main"
 
 export default function Suppliers() {
   return (
     <div>
       <Sidebar />
-      <h1>Fornecedores</h1>
+      <Main>
+        <h1>Fornecedores</h1>
+      </Main>
     </div>
   )
 }

@@ -30,8 +30,8 @@ export default function Sidebar() {
 
   return (
     <nav className={`fixed top-0 left-0 h-full bg-[#1A1A27] z-10 flex flex-col transition-all duration-300 ease-in-out ${isOpen ? 'w-60' : 'w-20'}`}>
-      <header className="flex items-center justify-between px-4 py-2 mt-4">
-        <div className={`flex gap-3 items-center transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+      <header className={`flex items-center px-4 py-2 mt-4 ${isOpen ? 'justify-between' : 'justify-center'}`}>
+        <div className={`flex gap-3 items-center transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
           <img src={Logo} alt="Logo" className='h-6 w-auto rounded-lg' />
           <h1 className={`text-white lowercase font-bold tracking-wide ${isOpen ? '' : 'hidden'}`}>
             StockFlow
