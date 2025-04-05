@@ -1,3 +1,4 @@
+import Header from "../../components/Header"
 import Sidebar from "../../components/Sidebar"
 import Main from "../../components/Main"
 import Toolbar from "../../components/Toolbar"
@@ -35,6 +36,7 @@ export default function Categories() {
 
   return (
     <div>
+      <Header />
       <Sidebar />
       <Main>
         <h1 className="font-semibold text-xl text-gray-800">Categorias</h1>
