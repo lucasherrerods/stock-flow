@@ -4,7 +4,7 @@ export const ToggleSidebar = createContext()
 
 export function ToggleProvider({ children }) {
   //Estado que controla a funcionalidade toggle da sidebar, inicia fechada
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev)
