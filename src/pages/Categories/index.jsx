@@ -1,30 +1,23 @@
 import Sidebar from "../../components/Sidebar"
 import Main from "../../components/Main"
 import Toolbar from "../../components/Toolbar"
+import Pagination from "../../components/Pagination"
 import api from "../../services/api"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { SquarePen, Trash } from "lucide-react"
 
 export default function Categories() {
-  // Estado de armazenamento das categorias
+  //Estado de armazenamento das categorias
   const [allCategories, setAllCategories] = useState([])
 
-  //Estado da paginação
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 7
+  //Estados para receber os itens da página atual da paginação
+  const [currentItems, setCurrentItems] = useState([])
+  const [itemsPerPage, setItemsPerPage] = useState(0)
 
-  //Cálculos da paginação
-  const indexLastItem = currentPage * itemsPerPage
-  const indexFirstItem = indexLastItem - itemsPerPage
-  const currentItems = allCategories.slice(indexFirstItem, indexLastItem) //Meio que divide e deixa apenas os itens da página atual
-  const totalPages = Math.ceil(allCategories.length / itemsPerPage)
-
-  //Validação para trocar de página
-  const paginate = (pageNumber) => {
-    if (pageNumber > 0 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber)
-    }
-  }
+  const getItems = useCallback(({ currentItems, itemsPerPage }) => {
+    setCurrentItems(currentItems)
+    setItemsPerPage(itemsPerPage)
+  }, [])
 
   const loadCategories = async () => {
     const token = localStorage.getItem('token')
@@ -85,38 +78,7 @@ export default function Categories() {
           </ul>
         </div>
         {allCategories.length > itemsPerPage && (
-          <div className="flex justify-between items-center mt-4 px-4 py-3 bg-gray-50 rounded-b-lg border border-gray-200">
-            <span className="text-sm text-gray-600">
-              Mostrando {indexFirstItem + 1}-{Math.min(indexLastItem, allCategories.length)} de {allCategories.length} itens
-            </span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-3 py-1 text-sm rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
-              >
-                Anterior
-              </button>
-              {/* Gera botões com números de página automaticamente */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
-                <button
-                  key={number}
-                  onClick={() => paginate(number)}
-                  className={`w-8 h-8 text-sm rounded ${currentPage === number ? 'bg-[#292946] text-white' : 'border border-gray-300 hover:bg-gray-200'}`}
-                >
-                  {number}
-                </button>
-              ))}
-
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 text-sm rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
-              >
-                Próxima
-              </button>
-            </div>
-          </div>
+          <Pagination itemsState={allCategories} getItems={getItems} />
         )}
       </Main>
     </div>
