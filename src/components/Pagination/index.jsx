@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 export default function Pagination({ itemsState, getItems }) {
   //Estado da paginação
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 7
+  const itemsPerPage = 5
 
   //Cálculos da paginação
   const indexLastItem = currentPage * itemsPerPage
