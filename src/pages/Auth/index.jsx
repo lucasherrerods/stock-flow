@@ -68,6 +68,7 @@ export default function Auth() {
       })
 
       localStorage.setItem('token', data.token)
+      localStorage.setItem('username', data.name)
       navigate('/dashboard')
     } catch (error) {
       localStorage.removeItem('token')//Limpa o token inválido
