@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react'
 
-export default function Toolbar({ search, button }) {
+export default function Toolbar({ search, button, onInputChange }) {
   return (
     <div className="flex items-center justify-between mt-10">
       <div className='flex items-center gap-4'>
@@ -9,6 +9,7 @@ export default function Toolbar({ search, button }) {
           <input
             type="text"
             placeholder={search}
+            onChange={(e) => onInputChange(e.target.value)}
             className="w-50 border border-gray-300 py-1.5 pl-9 pr-4 rounded-md shadow-md text-xs outline-none transition-all duration-200 ease-in-out focus:border-orange-500"
           />
         </div>

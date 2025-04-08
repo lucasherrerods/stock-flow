@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react"
 
-export default function Pagination({ itemsState, getItems }) {
+export default function Pagination({ items, itemsPerPage, onPageChange }) {
   //Estado da paginação
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
 
   //Cálculos da paginação
   const indexLastItem = currentPage * itemsPerPage
   const indexFirstItem = indexLastItem - itemsPerPage
-  const totalPages = Math.ceil(itemsState.length / itemsPerPage)
+  const totalPages = Math.ceil(items.length / itemsPerPage)
 
   //Validação para trocar de página
   const paginate = (pageNumber) => {
@@ -19,17 +18,15 @@ export default function Pagination({ itemsState, getItems }) {
 
   //Atualiza os itens da página atual sempre que currentPage mudar
   useEffect(() => {
-    const currentItems = itemsState.slice(indexFirstItem, indexLastItem) //Meio que divide e deixa apenas os itens da página atual
+    const currentItems = items.slice(indexFirstItem, indexLastItem) //Meio que divide e deixa apenas os itens da página atual
+    onPageChange(currentItems)
 
-    if (getItems) {
-      getItems({ currentItems, itemsPerPage })//Passa os valores para o componente pai
-    }
-  }, [currentPage, itemsPerPage, getItems])
+  }, [currentPage, items, itemsPerPage, onPageChange])
 
   return (
     <div className="flex justify-between items-center mt-4 px-4 py-3 bg-gray-50 rounded-b-lg border border-gray-200">
       <span className="text-sm text-gray-600">
-        Mostrando {indexFirstItem + 1}-{Math.min(indexLastItem, itemsState.length)} de {itemsState.length} itens
+        Mostrando {indexFirstItem + 1}-{Math.min(indexLastItem, items.length)} de {items.length} itens
       </span>
       <div className="flex gap-1">
         <button
