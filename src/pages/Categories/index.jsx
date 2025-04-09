@@ -68,13 +68,25 @@ export default function Categories() {
     setCurrentItems(items)
   }, [])
 
+  const loadOrder = (orderValue) => {
+    let result = [...allCategories]
+
+    if (orderValue === 'az') {
+      result.sort((a, b) => a.name.localeCompare(b.name))
+    } else if (orderValue === 'za') {
+      result.sort((a, b) => b.name.localeCompare(a.name))
+    }
+
+    setAllCategories(result)
+  }
+
   return (
     <div>
       <Header />
       <Sidebar />
       <Main>
         <h1 className="font-semibold text-xl text-gray-800">Categorias</h1>
-        <Toolbar search={'Buscar por nome ou ID'} button={'Adicionar categoria'} onInputChange={loadCategories} />
+        <Toolbar search={'Buscar por nome ou ID'} button={'Adicionar categoria'} onInputChange={loadCategories} onOrder={loadOrder} />
         <div className='pt-6'>
           <ul className='grid grid-cols-3 text-xs bg-[#292946] text-white py-3 rounded-t-lg px-4'>
             <li className="text-center font-semibold">ID</li>

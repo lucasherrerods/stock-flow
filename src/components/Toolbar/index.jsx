@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react'
 
-export default function Toolbar({ search, button, onInputChange }) {
+export default function Toolbar({ search, button, onInputChange, onOrder }) {
   return (
     <div className="flex items-center justify-between mt-10">
       <div className='flex items-center gap-4'>
@@ -13,7 +13,7 @@ export default function Toolbar({ search, button, onInputChange }) {
             className="w-50 border border-gray-300 py-1.5 pl-9 pr-4 rounded-md shadow-md text-xs outline-none transition-all duration-200 ease-in-out focus:border-orange-500"
           />
         </div>
-        <select className="border border-gray-300 py-1.5 px-3 rounded-md shadow-md text-xs outline-none transition-all duration-200 ease-in-out focus:border-orange-500 cursor-pointer">
+        <select onChange={(e) => onOrder(e.target.value)} className="border border-gray-300 py-1.5 px-3 rounded-md shadow-md text-xs outline-none transition-all duration-200 ease-in-out focus:border-orange-500 cursor-pointer">
           <option value="">Filtrar por</option>
           <option value="az">A-Z</option>
           <option value="za">Z-A</option>
