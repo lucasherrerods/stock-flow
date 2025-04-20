@@ -1,10 +1,12 @@
 import { useState } from "react"
 import api from '../../services/api'
 import { ToastContainer, toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom"
 
 export default function Auth() {
   //Card de notificações dinâmicas
   const notify = (msg, type) => toast[type](msg, { position: 'bottom-left', autoClose: 1500, theme: 'light' })
+  const navigate = useNavigate()
 
   //Estado que controla a transição dos form
   const [isActive, setIsActive] = useState(false)
@@ -32,7 +34,7 @@ export default function Auth() {
 
   const validateLogin = () => {
     if (!formLogin.email || !formLogin.password) {
-      notify('Por favor, preencha todos os campos.', 'error');
+      notify('Por favor, preencha todos os campos.', 'error')
       return false
     }
     return true
@@ -40,12 +42,12 @@ export default function Auth() {
 
   const validateRegister = () => {
     if (!formRegister.name || !formRegister.email || !formRegister.password) {
-      notify('Por favor, preencha todos os campos.', 'error');
+      notify('Por favor, preencha todos os campos.', 'error')
       return false
     }
 
     if (formRegister.password.length < 8) {
-      notify('Por favor, insira uma senha com no mínimo 8 caracteres.', 'error');
+      notify('Por favor, insira uma senha com no mínimo 8 caracteres.', 'error')
       return false
     }
     return true
@@ -66,6 +68,8 @@ export default function Auth() {
       })
 
       localStorage.setItem('token', data.token)
+      localStorage.setItem('username', data.name)
+      navigate('/dashboard')
     } catch (error) {
       localStorage.removeItem('token')//Limpa o token inválido
       notify('Houve um erro ao tentar acessar sua conta. Verifique seus dados e tente novamente.', 'error')
